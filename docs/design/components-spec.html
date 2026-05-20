@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafe — Design System · Composants</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Design Tokens ─────────────────────────────────────────── */
+    :root {
+      --color-espresso:    #1C0F07;
+      --color-coffee:      #2D1810;
+      --color-roast:       #4A2515;
+      --color-mahogany:    #6B3A25;
+      --color-caramel:     #C9874A;
+      --color-honey:       #E8A836;
+      --color-almond:      #D4A574;
+      --color-cream:       #F7EDD5;
+      --color-parchment:   #EDE0C4;
+      --color-latte:       #F5EDD8;
+      --color-snow:        #FEFAF5;
+      --color-text:        #1C0F07;
+      --color-text-muted:  #6B3A25;
+      --color-text-subtle: #9A6B50;
+      --color-text-inverse:#FEFAF5;
+      --color-border:      #D4B896;
+      --color-border-muted:#E8D8C4;
+      --color-success:     #3D7A4E;
+      --color-warning:     #B47A2B;
+      --color-error:       #9B2335;
+      --color-info:        #2C5F8A;
+
+      --font-display:  'Playfair Display', Georgia, serif;
+      --font-heading:  'Cormorant Garamond', Georgia, serif;
+      --font-body:     'DM Sans', system-ui, sans-serif;
+      --font-mono:     'JetBrains Mono', monospace;
+
+      --radius-sm:   4px;  --radius-md:   8px;   --radius-lg:   12px;
+      --radius-xl:   16px; --radius-2xl:  24px;  --radius-pill: 9999px;
+
+      --shadow-sm:   0 1px 3px rgba(28,15,7,.10), 0 1px 2px rgba(28,15,7,.06);
+      --shadow-md:   0 4px 6px rgba(28,15,7,.08), 0 2px 4px rgba(28,15,7,.05);
+      --shadow-lg:   0 10px 15px rgba(28,15,7,.10),0 4px 6px rgba(28,15,7,.05);
+      --shadow-card: 0 2px 8px rgba(28,15,7,.08), 0 8px 24px rgba(28,15,7,.06);
+      --shadow-glow: 0 0 20px rgba(201,135,74,.40),0 0 40px rgba(201,135,74,.20);
+
+      --transition-fast:   200ms cubic-bezier(0.4,0,0.2,1);
+      --transition-base:   300ms cubic-bezier(0.4,0,0.2,1);
+      --transition-spring: 400ms cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    /* ── Reset ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--color-text);
+      background: var(--color-snow);
+    }
+
+    /* ── Layout ──────────────────────────────────────────────────── */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ── Sidebar ─────────────────────────────────────────────────── */
+    .sidebar {
+      width: 240px; flex-shrink: 0;
+      background: var(--color-espresso);
+      position: sticky; top: 0; height: 100vh;
+      overflow-y: auto; padding: 2rem 0;
+      display: flex; flex-direction: column;
+    }
+    .sidebar-brand { padding: 0 1.5rem 2rem; border-bottom: 1px solid rgba(201,135,74,.2); }
+    .sidebar-brand-name { font-family: var(--font-display); font-size: 1.125rem; color: var(--color-cream); font-weight: 700; }
+    .sidebar-brand-sub  { font-size: 0.6875rem; color: var(--color-mahogany); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 0.25rem; }
+    .sidebar-nav { padding: 1.5rem 0; flex: 1; }
+    .sidebar-section { padding: 0 1.5rem 1.5rem; }
+    .sidebar-section-label { font-size: 0.625rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-mahogany); font-weight: 600; margin-bottom: 0.5rem; }
+    .sidebar-link { display: block; padding: 0.4rem 0.75rem; font-size: 0.8125rem; color: var(--color-almond); text-decoration: none; border-radius: 6px; transition: all 200ms; margin-bottom: 2px; }
+    .sidebar-link:hover { background: rgba(201,135,74,.15); color: var(--color-caramel); }
+    .sidebar-link.active { background: rgba(201,135,74,.2); color: var(--color-caramel); }
+    .sidebar-version { padding: 1.5rem; font-size: 0.6875rem; color: var(--color-roast); border-top: 1px solid rgba(201,135,74,.1); }
+
+    /* ── Main ────────────────────────────────────────────────────── */
+    .main { flex: 1; min-width: 0; overflow-x: hidden; }
+
+    /* ── Page Header ─────────────────────────────────────────────── */
+    .page-header {
+      background: linear-gradient(135deg, var(--color-espresso) 0%, #3D1E0F 60%, var(--color-coffee) 100%);
+      padding: 5rem 4rem; position: relative; overflow: hidden;
+    }
+    .page-header::before {
+      content: ''; position: absolute; top: -40%; right: -5%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(201,135,74,.12) 0%, transparent 65%);
+    }
+    .page-header-eyebrow { font-size: 0.6875rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-caramel); font-weight: 600; margin-bottom: 1rem; }
+    .page-header-title { font-family: var(--font-display); font-size: clamp(2.5rem,5vw,4rem); color: var(--color-cream); font-weight: 700; line-height: 1.1; margin-bottom: 1.25rem; }
+    .page-header-title em { font-style: italic; color: var(--color-honey); }
+    .page-header-desc { font-size: 1rem; color: var(--color-almond); max-width: 520px; line-height: 1.65; }
+
+    /* ── Section ─────────────────────────────────────────────────── */
+    .section { padding: 4rem; border-bottom: 1px solid var(--color-border-muted); }
+    .section:nth-child(even) { background: var(--color-latte); }
+    .section:nth-child(odd)  { background: var(--color-snow); }
+    .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--color-border-muted); }
+    .section-number { font-family: var(--font-display); font-size: 0.875rem; color: var(--color-caramel); font-weight: 700; flex-shrink: 0; }
+    .section-title { font-family: var(--font-display); font-size: 1.75rem; color: var(--color-espresso); font-weight: 700; }
+    .section-desc { font-size: 0.9375rem; color: var(--color-text-subtle); margin-top: 0.5rem; line-height: 1.6; }
+    .subsection { margin-bottom: 3.5rem; }
+    .subsection-title { font-family: var(--font-heading); font-size: 1.125rem; color: var(--color-text-muted); font-weight: 600; margin-bottom: 1.5rem; letter-spacing: 0.02em; }
+    .component-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-start; margin-bottom: 1rem; }
+    .component-demo {
+      background: white; border-radius: var(--radius-xl);
+      padding: 2rem; border: 1px solid var(--color-border-muted);
+      box-shadow: var(--shadow-sm);
+    }
+    .component-demo.dark {
+      background: var(--color-espresso);
+      border-color: rgba(201,135,74,.2);
+    }
+    .component-label { font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-subtle); margin-bottom: 1rem; font-weight: 600; }
+    .spec-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin-top: 1rem; }
+    .spec-table th { text-align: left; padding: 0.5rem 0.75rem; font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-subtle); font-weight: 600; border-bottom: 2px solid var(--color-border); background: var(--color-parchment); }
+    .spec-table td { padding: 0.625rem 0.75rem; border-bottom: 1px solid var(--color-border-muted); vertical-align: middle; }
+    .spec-table tr:hover td { background: rgba(201,135,74,.04); }
+    .token { font-family: var(--font-mono); font-size: 0.6875rem; background: rgba(28,15,7,.06); color: var(--color-mahogany); padding: 0.125rem 0.4rem; border-radius: 3px; border: 1px solid rgba(28,15,7,.08); }
+    .code-block {
+      background: var(--color-espresso); color: var(--color-almond);
+      font-family: var(--font-mono); font-size: 0.8125rem;
+      padding: 1.25rem 1.5rem; border-radius: var(--radius-lg);
+      line-height: 1.7; overflow-x: auto; margin-top: 1rem;
+    }
+    .code-block .kw { color: var(--color-honey); }
+    .code-block .cls { color: var(--color-caramel); }
+    .code-block .str { color: #8EC8B0; }
+    .code-block .cmt { color: var(--color-mahogany); font-style: italic; }
+
+    /* ══════════════════════════════════════════════════════════════
+       COMPONENT STYLES
+    ══════════════════════════════════════════════════════════════ */
+
+    /* ── Buttons ──────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      font-family: var(--font-body); font-weight: 500; cursor: pointer;
+      border: none; text-decoration: none;
+      transition: all var(--transition-spring);
+      white-space: nowrap; user-select: none;
+    }
+    .btn:focus-visible {
+      outline: 2px solid var(--color-caramel);
+      outline-offset: 3px;
+    }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+    /* Variants */
+    .btn-primary {
+      background: var(--color-caramel);
+      color: white;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 2px 8px rgba(201,135,74,.35);
+    }
+    .btn-primary:hover {
+      background: #B5733A;
+      box-shadow: var(--shadow-glow);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); box-shadow: none; }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--color-caramel);
+      border: 1.5px solid var(--color-caramel);
+      border-radius: var(--radius-pill);
+    }
+    .btn-secondary:hover {
+      background: rgba(201,135,74,.08);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--color-text-muted);
+      border-radius: var(--radius-md);
+    }
+    .btn-ghost:hover {
+      background: rgba(28,15,7,.06);
+      color: var(--color-text);
+    }
+
+    .btn-dark {
+      background: var(--color-espresso);
+      color: var(--color-cream);
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(201,135,74,.2);
+    }
+    .btn-dark:hover {
+      background: var(--color-coffee);
+      border-color: rgba(201,135,74,.5);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--color-honey), var(--color-caramel));
+      color: white;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 2px 8px rgba(232,168,54,.35);
+    }
+    .btn-gold:hover {
+      box-shadow: 0 0 20px rgba(232,168,54,.5);
+      transform: translateY(-1px);
+    }
+
+    /* Sizes */
+    .btn-xs { font-size: 0.75rem;  padding: 0.375rem 0.875rem; height: 1.75rem; }
+    .btn-sm { font-size: 0.8125rem;padding: 0.5rem 1.125rem;   height: 2.25rem; }
+    .btn-md { font-size: 0.9375rem;padding: 0.625rem 1.5rem;   height: 2.75rem; }
+    .btn-lg { font-size: 1rem;     padding: 0.75rem 2rem;      height: 3.25rem; letter-spacing: 0.01em; }
+    .btn-xl { font-size: 1.125rem; padding: 1rem 2.5rem;       height: 4rem;    letter-spacing: 0.02em; font-weight: 600; }
+
+    /* Icon button */
+    .btn-icon {
+      width: 2.75rem; height: 2.75rem; padding: 0;
+      border-radius: var(--radius-md);
+    }
+    .btn-icon.btn-sm { width: 2.25rem; height: 2.25rem; }
+    .btn-icon.btn-lg { width: 3.25rem; height: 3.25rem; border-radius: var(--radius-lg); }
+
+    /* Loading state */
+    .btn-loading { position: relative; pointer-events: none; }
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 1rem; height: 1rem;
+      border: 2px solid rgba(255,255,255,.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    .btn-loading > * { opacity: 0; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Form Elements ────────────────────────────────────────── */
+    .form-group { margin-bottom: 1.25rem; }
+    .form-label {
+      display: block; font-size: 0.875rem; font-weight: 500;
+      color: var(--color-text-muted); margin-bottom: 0.5rem;
+    }
+    .form-hint {
+      display: block; font-size: 0.75rem;
+      color: var(--color-text-subtle); margin-top: 0.375rem;
+    }
+    .form-error {
+      display: block; font-size: 0.75rem;
+      color: var(--color-error); margin-top: 0.375rem;
+    }
+
+    .input {
+      display: block; width: 100%;
+      font-family: var(--font-body); font-size: 0.9375rem;
+      color: var(--color-text);
+      background: white;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 0 1rem;
+      height: 2.75rem;
+      transition: all var(--transition-fast);
+      outline: none;
+      appearance: none;
+    }
+    .input::placeholder { color: var(--color-text-subtle); }
+    .input:hover { border-color: var(--color-almond); }
+    .input:focus {
+      border-color: var(--color-caramel);
+      box-shadow: 0 0 0 3px rgba(201,135,74,.18);
+    }
+    .input.input-error {
+      border-color: var(--color-error);
+      box-shadow: 0 0 0 3px rgba(155,35,53,.12);
+    }
+    .input.input-success {
+      border-color: var(--color-success);
+      box-shadow: 0 0 0 3px rgba(61,122,78,.12);
+    }
+    .input-sm { height: 2.25rem; font-size: 0.875rem; }
+    .input-lg { height: 3.5rem;  font-size: 1rem;    border-radius: var(--radius-lg); }
+
+    .textarea {
+      display: block; width: 100%; min-height: 120px;
+      font-family: var(--font-body); font-size: 0.9375rem;
+      color: var(--color-text); background: white;
+      border: 1.5px solid var(--color-border); border-radius: var(--radius-md);
+      padding: 0.75rem 1rem; resize: vertical; outline: none;
+      transition: all var(--transition-fast); line-height: 1.6;
+    }
+    .textarea:focus { border-color: var(--color-caramel); box-shadow: 0 0 0 3px rgba(201,135,74,.18); }
+    .textarea::placeholder { color: var(--color-text-subtle); }
+
+    /* Input with icon */
+    .input-wrapper { position: relative; }
+    .input-icon-left  { position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--color-text-subtle); pointer-events: none; }
+    .input-icon-right { position: absolute; right: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--color-text-subtle); }
+    .input-with-icon-left  { padding-left: 2.5rem; }
+    .input-with-icon-right { padding-right: 2.5rem; }
+
+    /* Select */
+    .select {
+      display: block; width: 100%;
+      font-family: var(--font-body); font-size: 0.9375rem;
+      color: var(--color-text); background: white;
+      border: 1.5px solid var(--color-border); border-radius: var(--radius-md);
+      padding: 0 2.5rem 0 1rem; height: 2.75rem; outline: none;
+      appearance: none; cursor: pointer;
+      transition: all var(--transition-fast);
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%236B3A25' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+    .select:focus { border-color: var(--color-caramel); box-shadow: 0 0 0 3px rgba(201,135,74,.18); }
+
+    /* Checkbox & Radio */
+    .checkbox-label, .radio-label {
+      display: flex; align-items: center; gap: 0.625rem;
+      cursor: pointer; font-size: 0.9375rem; color: var(--color-text);
+      user-select: none;
+    }
+    .checkbox-input, .radio-input { display: none; }
+    .checkbox-box {
+      width: 1.125rem; height: 1.125rem; flex-shrink: 0;
+      border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);
+      background: white; transition: all var(--transition-fast);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .checkbox-input:checked + .checkbox-box {
+      background: var(--color-caramel); border-color: var(--color-caramel);
+    }
+    .checkbox-input:checked + .checkbox-box::after {
+      content: ''; width: 5px; height: 8px;
+      border: 2px solid white; border-top: none; border-left: none;
+      transform: rotate(45deg) translateY(-1px);
+    }
+    .radio-circle {
+      width: 1.125rem; height: 1.125rem; flex-shrink: 0;
+      border: 1.5px solid var(--color-border); border-radius: 50%;
+      background: white; transition: all var(--transition-fast);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .radio-input:checked + .radio-circle {
+      border-color: var(--color-caramel);
+    }
+    .radio-input:checked + .radio-circle::after {
+      content: ''; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--color-caramel);
+    }
+
+    /* Toggle */
+    .toggle-label { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; user-select: none; }
+    .toggle-input { display: none; }
+    .toggle-track {
+      width: 2.75rem; height: 1.5rem; border-radius: 999px;
+      background: var(--color-border); transition: background var(--transition-base);
+      position: relative; flex-shrink: 0;
+    }
+    .toggle-track::after {
+      content: ''; position: absolute;
+      top: 3px; left: 3px;
+      width: 1.125rem; height: 1.125rem; border-radius: 50%;
+      background: white; box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-spring);
+    }
+    .toggle-input:checked + .toggle-track { background: var(--color-caramel); }
+    .toggle-input:checked + .toggle-track::after { transform: translateX(1.25rem); }
+
+    /* ── Cards ─────────────────────────────────────────────────── */
+    .card {
+      background: white; border-radius: var(--radius-xl);
+      border: 1px solid var(--color-border-muted);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      transition: all var(--transition-base);
+    }
+    .card:hover {
+      box-shadow: 0 4px 16px rgba(28,15,7,.12), 0 16px 40px rgba(28,15,7,.10);
+      transform: translateY(-2px);
+    }
+
+    /* Product Card */
+    .card-product { width: 220px; }
+    .card-product-img {
+      width: 100%; height: 160px;
+      background: linear-gradient(135deg, var(--color-parchment), var(--color-latte));
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+    }
+    .card-product-badge {
+      position: absolute; top: 0.75rem; left: 0.75rem;
+      background: var(--color-caramel); color: white;
+      font-size: 0.6875rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.25rem 0.625rem; border-radius: var(--radius-pill);
+    }
+    .card-product-body { padding: 1.125rem; }
+    .card-product-category {
+      font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--color-caramel); font-weight: 600; margin-bottom: 0.375rem;
+    }
+    .card-product-name {
+      font-family: var(--font-heading); font-size: 1.125rem; font-weight: 600;
+      color: var(--color-espresso); margin-bottom: 0.375rem; line-height: 1.3;
+    }
+    .card-product-desc { font-size: 0.8125rem; color: var(--color-text-subtle); line-height: 1.5; margin-bottom: 1rem; }
+    .card-product-footer { display: flex; align-items: center; justify-content: space-between; }
+    .card-product-price {
+      font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--color-espresso);
+    }
+    .card-product-price .currency { font-size: 0.875rem; color: var(--color-text-subtle); margin-right: 2px; }
+
+    /* Event Card */
+    .card-event { width: 280px; }
+    .card-event-img {
+      width: 100%; height: 200px;
+      background: linear-gradient(135deg, var(--color-coffee), var(--color-roast));
+      display: flex; align-items: flex-end; padding: 1rem;
+      position: relative;
+    }
+    .card-event-date {
+      position: absolute; top: 1rem; right: 1rem;
+      background: var(--color-caramel); color: white;
+      border-radius: var(--radius-lg); padding: 0.5rem 0.75rem;
+      text-align: center; min-width: 52px;
+    }
+    .card-event-date-day { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; line-height: 1; }
+    .card-event-date-month { font-size: 0.625rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.9; margin-top: 2px; }
+    .card-event-body { padding: 1.25rem; }
+    .card-event-type {
+      font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--color-caramel); font-weight: 600; margin-bottom: 0.375rem;
+    }
+    .card-event-name { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 600; color: var(--color-espresso); margin-bottom: 0.5rem; line-height: 1.3; }
+    .card-event-meta { display: flex; gap: 1rem; font-size: 0.8125rem; color: var(--color-text-subtle); }
+
+    /* Story / Feature Card */
+    .card-story { width: 320px; padding: 1.75rem; background: var(--color-espresso); border: none; }
+    .card-story .card-story-number { font-family: var(--font-display); font-size: 3rem; font-weight: 900; color: rgba(201,135,74,.25); line-height: 1; margin-bottom: 0.75rem; }
+    .card-story .card-story-title { font-family: var(--font-display); font-size: 1.25rem; color: var(--color-cream); font-weight: 700; margin-bottom: 0.75rem; }
+    .card-story .card-story-body { font-size: 0.875rem; color: var(--color-almond); line-height: 1.65; }
+    .card-story:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(201,135,74,.2); }
+
+    /* ── Navigation ───────────────────────────────────────────── */
+    .navbar-demo {
+      background: var(--color-espresso);
+      padding: 0 2rem; height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+      gap: 2rem;
+    }
+    .navbar-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; flex-shrink: 0; }
+    .navbar-logo {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-caramel), var(--color-honey));
+      display: flex; align-items: center; justify-content: center; font-size: 1.125rem;
+    }
+    .navbar-name { font-family: var(--font-display); font-size: 1.125rem; color: var(--color-cream); font-weight: 700; }
+    .navbar-links { display: flex; align-items: center; gap: 0.25rem; flex: 1; justify-content: center; }
+    .navbar-link {
+      padding: 0.5rem 0.875rem; border-radius: var(--radius-md);
+      font-size: 0.875rem; color: var(--color-almond); text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+    .navbar-link:hover { color: var(--color-cream); background: rgba(255,255,255,.06); }
+    .navbar-link.active { color: var(--color-caramel); }
+    .navbar-actions { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+    .navbar-cart {
+      width: 40px; height: 40px; border-radius: var(--radius-md);
+      background: rgba(255,255,255,.06); border: 1px solid rgba(201,135,74,.2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-almond); cursor: pointer; font-size: 1.125rem;
+      transition: all var(--transition-fast); position: relative;
+    }
+    .navbar-cart:hover { background: rgba(201,135,74,.15); color: var(--color-caramel); }
+    .cart-badge {
+      position: absolute; top: -4px; right: -4px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--color-caramel); color: white;
+      font-size: 0.5625rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--color-espresso);
+    }
+
+    /* Scrolled navbar */
+    .navbar-scrolled {
+      background: rgba(28,15,7,.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,135,74,.15);
+    }
+
+    /* Mobile menu button */
+    .hamburger {
+      width: 40px; height: 40px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 5px;
+      cursor: pointer; border-radius: var(--radius-md);
+      background: rgba(255,255,255,.06);
+    }
+    .hamburger span { display: block; width: 20px; height: 1.5px; background: var(--color-almond); border-radius: 2px; transition: all var(--transition-base); }
+
+    /* ── Badges & Tags ────────────────────────────────────────── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      font-size: 0.6875rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.2rem 0.625rem; border-radius: var(--radius-pill);
+      white-space: nowrap;
+    }
+    .badge-primary   { background: rgba(201,135,74,.15); color: var(--color-caramel); border: 1px solid rgba(201,135,74,.3); }
+    .badge-dark      { background: var(--color-espresso); color: var(--color-almond); border: 1px solid rgba(201,135,74,.2); }
+    .badge-gold      { background: linear-gradient(135deg, var(--color-honey), var(--color-caramel)); color: white; }
+    .badge-success   { background: #D4EDDA; color: var(--color-success); border: 1px solid #A3C4AB; }
+    .badge-error     { background: #F8D7DA; color: var(--color-error); border: 1px solid #E8A0A8; }
+    .badge-new       { background: var(--color-caramel); color: white; }
+    .badge-sold-out  { background: rgba(28,15,7,.08); color: var(--color-text-subtle); text-decoration: line-through; }
+
+    .tag {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      font-size: 0.8125rem; font-weight: 500;
+      padding: 0.3rem 0.875rem; border-radius: var(--radius-pill);
+      border: 1.5px solid var(--color-border); color: var(--color-text-muted);
+      background: white; cursor: pointer; transition: all var(--transition-fast);
+    }
+    .tag:hover, .tag.active { border-color: var(--color-caramel); color: var(--color-caramel); background: rgba(201,135,74,.06); }
+
+    /* ── Alerts ───────────────────────────────────────────────── */
+    .alert {
+      display: flex; gap: 0.875rem; align-items: flex-start;
+      padding: 1rem 1.25rem; border-radius: var(--radius-lg);
+      border-width: 1px; border-style: solid;
+      font-size: 0.9375rem; line-height: 1.5;
+    }
+    .alert-icon { font-size: 1.125rem; flex-shrink: 0; margin-top: 1px; }
+    .alert-content {}
+    .alert-title { font-weight: 600; margin-bottom: 0.25rem; }
+    .alert-desc  { font-size: 0.875rem; opacity: 0.85; }
+    .alert-success { background: #D4EDDA; border-color: #A3C4AB; color: #1F4A2A; }
+    .alert-warning { background: #FFF3CD; border-color: #F5D27A; color: #6B4400; }
+    .alert-error   { background: #F8D7DA; border-color: #E8A0A8; color: #5C0F1C; }
+    .alert-info    { background: #D1ECF1; border-color: #9DD5DF; color: #0E3A4A; }
+
+    /* ── Toast ────────────────────────────────────────────────── */
+    .toast {
+      display: flex; gap: 0.75rem; align-items: center;
+      background: var(--color-espresso); color: var(--color-cream);
+      padding: 0.875rem 1.25rem;
+      border-radius: var(--radius-xl); box-shadow: var(--shadow-xl);
+      border: 1px solid rgba(201,135,74,.2);
+      min-width: 280px; max-width: 400px;
+      font-size: 0.875rem;
+    }
+    .toast-icon { font-size: 1.125rem; flex-shrink: 0; }
+    .toast-content { flex: 1; }
+    .toast-title { font-weight: 600; color: var(--color-caramel); margin-bottom: 2px; }
+    .toast-desc  { color: var(--color-almond); font-size: 0.8125rem; }
+    .toast-close { color: var(--color-text-subtle); cursor: pointer; font-size: 1.125rem; flex-shrink: 0; opacity: 0.6; }
+    .toast-close:hover { opacity: 1; color: var(--color-almond); }
+
+    /* ── Dividers ─────────────────────────────────────────────── */
+    .divider { border: none; height: 1px; background: var(--color-border-muted); }
+    .divider-strong { background: var(--color-border); }
+    .divider-accent { background: linear-gradient(90deg, transparent, var(--color-caramel), transparent); height: 1px; }
+    .divider-with-label {
+      display: flex; align-items: center; gap: 1rem;
+      color: var(--color-text-subtle); font-size: 0.8125rem;
+    }
+    .divider-with-label::before, .divider-with-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--color-border-muted);
+    }
+
+    /* ── Modal ────────────────────────────────────────────────── */
+    .modal-demo { position: relative; background: rgba(28,15,7,.5); padding: 2rem; border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; }
+    .modal {
+      background: white; border-radius: var(--radius-2xl);
+      box-shadow: var(--shadow-xl); width: 100%; max-width: 480px;
+      overflow: hidden;
+    }
+    .modal-header { padding: 1.5rem 1.75rem 1.25rem; border-bottom: 1px solid var(--color-border-muted); display: flex; align-items: center; justify-content: space-between; }
+    .modal-title { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--color-espresso); }
+    .modal-close { width: 32px; height: 32px; border-radius: var(--radius-md); background: rgba(28,15,7,.06); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--color-text-subtle); font-size: 1.125rem; transition: all var(--transition-fast); }
+    .modal-close:hover { background: rgba(28,15,7,.1); color: var(--color-text); }
+    .modal-body { padding: 1.5rem 1.75rem; }
+    .modal-footer { padding: 1.25rem 1.75rem; border-top: 1px solid var(--color-border-muted); display: flex; gap: 0.75rem; justify-content: flex-end; }
+
+    /* ── Breadcrumb ───────────────────────────────────────────── */
+    .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; }
+    .breadcrumb-item { color: var(--color-text-subtle); text-decoration: none; }
+    .breadcrumb-item:hover { color: var(--color-caramel); text-decoration: underline; }
+    .breadcrumb-item.active { color: var(--color-text); font-weight: 500; }
+    .breadcrumb-sep { color: var(--color-border); font-size: 0.75rem; }
+
+    /* ── Stat Card ────────────────────────────────────────────── */
+    .stat-card {
+      background: white; border-radius: var(--radius-xl);
+      padding: 1.5rem; border: 1px solid var(--color-border-muted);
+      box-shadow: var(--shadow-sm); min-width: 160px;
+    }
+    .stat-label { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-subtle); margin-bottom: 0.5rem; }
+    .stat-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--color-espresso); line-height: 1; margin-bottom: 0.25rem; }
+    .stat-sub { font-size: 0.8125rem; color: var(--color-text-muted); }
+    .stat-accent { border-top: 3px solid var(--color-caramel); }
+    .stat-accent .stat-value { color: var(--color-caramel); }
+
+    /* ── Loading / Skeleton ───────────────────────────────────── */
+    .skeleton {
+      background: linear-gradient(90deg, var(--color-parchment) 25%, var(--color-latte) 50%, var(--color-parchment) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s ease infinite;
+      border-radius: var(--radius-sm);
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .spinner {
+      width: 24px; height: 24px;
+      border: 2.5px solid var(--color-border);
+      border-top-color: var(--color-caramel);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .section { padding: 2.5rem 1.5rem; }
+      .page-header { padding: 3rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ── Sidebar ── -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-name">Cafe DS</div>
+      <div class="sidebar-brand-sub">Composants v1.0</div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">UI Composants</div>
+        <a href="#buttons"    class="sidebar-link">01 · Boutons</a>
+        <a href="#forms"      class="sidebar-link">02 · Formulaires</a>
+        <a href="#cards"      class="sidebar-link">03 · Cartes</a>
+        <a href="#navigation" class="sidebar-link">04 · Navigation</a>
+        <a href="#badges"     class="sidebar-link">05 · Badges & Tags</a>
+        <a href="#alerts"     class="sidebar-link">06 · Alertes</a>
+        <a href="#modals"     class="sidebar-link">07 · Modaux</a>
+        <a href="#misc"       class="sidebar-link">08 · Divers</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Liens</div>
+        <a href="style-guide.html" class="sidebar-link">→ Style Guide</a>
+        <a href="design-tokens.css" class="sidebar-link">→ Tokens CSS</a>
+      </div>
+    </div>
+    <div class="sidebar-version">
+      Stack : Next.js 16 · React 19<br>
+      Tailwind CSS v4 · TypeScript 5
+    </div>
+  </nav>
+
+  <!-- ── Main ── -->
+  <main class="main">
+    <header class="page-header">
+      <div class="page-header-eyebrow">Cafe Design System</div>
+      <h1 class="page-header-title">Bibliothèque de <em>Composants</em></h1>
+      <p class="page-header-desc">
+        Spécifications complètes de chaque composant UI — variantes, états, tokens utilisés, et guides d'implémentation pour Next.js 16 + Tailwind CSS v4.
+      </p>
+    </header>
+
+    <!-- ════════════════════════════════════════════
+         01 — BOUTONS
+    ═════════════════════════════════════════════ -->
+    <section id="buttons" class="section">
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <div>
+          <h2 class="section-title">Boutons</h2>
+          <p class="section-desc">5 variantes de style × 5 tailles + états disabled, loading et icon-only.</p>
+        </div>
+      </div>
+
+      <!-- Variants -->
+      <div class="subsection">
+        <h3 class="subsection-title">Variantes de style</h3>
+        <div class="component-demo">
+          <div class="component-label">Variantes</div>
+          <div class="component-row">
+            <button class="btn btn-primary btn-md">Primary</button>
+            <button class="btn btn-secondary btn-md">Secondary</button>
+            <button class="btn btn-ghost btn-md">Ghost</button>
+            <button class="btn btn-dark btn-md">Dark</button>
+            <button class="btn btn-gold btn-md">Gold</button>
+          </div>
+        </div>
+        <table class="spec-table">
+          <thead><tr><th>Variante</th><th>Token fond</th><th>Token texte</th><th>Usage</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Primary</strong></td><td><span class="token">--color-caramel</span></td><td>white</td><td>Action principale, CTA page, "Commander"</td></tr>
+            <tr><td><strong>Secondary</strong></td><td>transparent</td><td><span class="token">--color-caramel</span></td><td>Action secondaire, alternative au CTA</td></tr>
+            <tr><td><strong>Ghost</strong></td><td>transparent</td><td><span class="token">--color-text-muted</span></td><td>Actions tertiaires, navigation, "Annuler"</td></tr>
+            <tr><td><strong>Dark</strong></td><td><span class="token">--color-espresso</span></td><td><span class="token">--color-cream</span></td><td>Hero dark, sur fonds clairs premium</td></tr>
+            <tr><td><strong>Gold</strong></td><td>gradient honey→caramel</td><td>white</td><td>Actions premium, "Réserver une table"</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sizes -->
+      <div class="subsection">
+        <h3 class="subsection-title">Tailles</h3>
+        <div class="component-demo">
+          <div class="component-label">Du plus petit au plus grand</div>
+          <div class="component-row" style="align-items:center">
+            <button class="btn btn-primary btn-xs">Extra Small</button>
+            <button class="btn btn-primary btn-sm">Small</button>
+            <button class="btn btn-primary btn-md">Medium</button>
+            <button class="btn btn-primary btn-lg">Large</button>
+            <button class="btn btn-primary btn-xl">Extra Large</button>
+          </div>
+        </div>
+        <table class="spec-table">
+          <thead><tr><th>Taille</th><th>Hauteur</th><th>Font</th><th>Padding H</th><th>Token</th></tr></thead>
+          <tbody>
+            <tr><td>xs</td><td>28px</td><td>12px</td><td>14px</td><td><span class="token">--btn-h-xs</span></td></tr>
+            <tr><td>sm</td><td>36px</td><td>13px</td><td>18px</td><td><span class="token">--btn-h-sm</span></td></tr>
+            <tr><td>md (défaut)</td><td>44px</td><td>15px</td><td>24px</td><td><span class="token">--btn-h-md</span></td></tr>
+            <tr><td>lg</td><td>52px</td><td>16px</td><td>32px</td><td><span class="token">--btn-h-lg</span></td></tr>
+            <tr><td>xl</td><td>64px</td><td>18px</td><td>40px</td><td><span class="token">--btn-h-xl</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- States -->
+      <div class="subsection">
+        <h3 class="subsection-title">États</h3>
+        <div class="component-demo">
+          <div class="component-label">Normal · Hover (survolez) · Disabled · Loading</div>
+          <div class="component-row" style="align-items:center">
+            <button class="btn btn-primary btn-md">Normal</button>
+            <button class="btn btn-primary btn-md" disabled>Disabled</button>
+            <button class="btn btn-primary btn-md btn-loading">Chargement</button>
+          </div>
+          <div class="component-row" style="align-items:center; margin-top:0.75rem">
+            <button class="btn btn-secondary btn-md">Normal</button>
+            <button class="btn btn-secondary btn-md" disabled>Disabled</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- With Icons -->
+      <div class="subsection">
+        <h3 class="subsection-title">Avec icônes & Icon-only</h3>
+        <div class="component-demo">
+          <div class="component-row" style="align-items:center">
+            <button class="btn btn-primary btn-md">☕ Commander</button>
+            <button class="btn btn-secondary btn-md">Voir le menu →</button>
+            <button class="btn btn-dark btn-md">🛒 Panier (3)</button>
+            <button class="btn btn-ghost btn-md btn-icon" title="Rechercher">🔍</button>
+            <button class="btn btn-ghost btn-md btn-icon" title="Panier">🛒</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block">
+<span class="cmt">/* Tailwind v4 — Classe utilitaire exemple pour btn-primary */</span>
+<span class="kw">className</span>=<span class="str">"inline-flex items-center gap-2 px-6 h-11 rounded-full bg-caramel
+         text-white text-sm font-medium transition-[transform,box-shadow]
+         hover:bg-[#B5733A] hover:-translate-y-px
+         focus-visible:outline-2 focus-visible:outline-caramel
+         disabled:opacity-45 disabled:pointer-events-none"</span></div>
+    </section>
+
+    <!-- ════════════════════════════════════════════
+         02 — FORMULAIRES
+    ═════════════════════════════════════════════ -->
+    <section id="forms" class="section">
+      <div class="section-header">
+        <span class="section-number">02</span>
+        <div>
+          <h2 class="section-title">Éléments de Formulaire</h2>
+          <p class="section-desc">Inputs, textareas, selects, checkboxes, radios et toggles — avec leurs états de validation.</p>
+        </div>
+      </div>
+
+      <!-- Text Inputs -->
+      <div class="subsection">
+        <h3 class="subsection-title">Champs texte</h3>
+        <div class="component-demo" style="max-width:600px">
+          <div class="form-group">
+            <label class="form-label">Adresse e-mail</label>
+            <input class="input" type="email" placeholder="vous@exemple.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mot de passe</label>
+            <input class="input input-error" type="password" value="123">
+            <span class="form-error">Le mot de passe doit contenir au moins 8 caractères.</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nom complet</label>
+            <input class="input input-success" type="text" value="Marie Dupont">
+            <span class="form-hint">Parfait, ce nom est disponible.</span>
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Rechercher un café</label>
+            <div class="input-wrapper">
+              <span class="input-icon-left">🔍</span>
+              <input class="input input-with-icon-left" type="text" placeholder="Espresso, Latte, Cappuccino...">
+            </div>
+          </div>
+        </div>
+        <table class="spec-table">
+          <thead><tr><th>État</th><th>Bordure</th><th>Box-shadow</th></tr></thead>
+          <tbody>
+            <tr><td>Default</td><td><span class="token">--color-border</span></td><td>aucun</td></tr>
+            <tr><td>Hover</td><td><span class="token">--color-almond</span></td><td>aucun</td></tr>
+            <tr><td>Focus</td><td><span class="token">--color-caramel</span></td><td>0 0 0 3px rgba(caramel, .18)</td></tr>
+            <tr><td>Error</td><td><span class="token">--color-error</span></td><td>0 0 0 3px rgba(error, .12)</td></tr>
+            <tr><td>Success</td><td><span class="token">--color-success</span></td><td>0 0 0 3px rgba(success, .12)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Input Sizes -->
+      <div class="subsection">
+        <h3 class="subsection-title">Tailles d'inputs</h3>
+        <div class="component-demo" style="max-width:400px; display:flex; flex-direction:column; gap:0.75rem">
+          <input class="input input-sm" type="text" placeholder="Small — 36px">
+          <input class="input" type="text" placeholder="Medium — 44px (défaut)">
+          <input class="input input-lg" type="text" placeholder="Large — 56px">
+        </div>
+      </div>
+
+      <!-- Textarea -->
+      <div class="subsection">
+        <h3 class="subsection-title">Textarea</h3>
+        <div class="component-demo" style="max-width:500px">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Votre message</label>
+            <textarea class="textarea" placeholder="Écrivez votre commande spéciale ou votre avis..."></textarea>
+            <span class="form-hint">Maximum 500 caractères.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Select -->
+      <div class="subsection">
+        <h3 class="subsection-title">Select</h3>
+        <div class="component-demo" style="max-width:400px">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Type de café</label>
+            <select class="select">
+              <option value="">Choisir un type...</option>
+              <option>Espresso</option>
+              <option>Latte</option>
+              <option>Cappuccino</option>
+              <option>Flat White</option>
+              <option>Cold Brew</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkbox, Radio, Toggle -->
+      <div class="subsection">
+        <h3 class="subsection-title">Checkbox, Radio & Toggle</h3>
+        <div class="component-demo" style="display:flex; gap:3rem; flex-wrap:wrap">
+          <div>
+            <div class="component-label">Checkboxes</div>
+            <div style="display:flex;flex-direction:column;gap:0.625rem">
+              <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input" checked>
+                <span class="checkbox-box"></span>
+                Lait entier
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input">
+                <span class="checkbox-box"></span>
+                Lait végétal (+0,50€)
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input" disabled checked>
+                <span class="checkbox-box" style="opacity:.45"></span>
+                <span style="opacity:.45">Sans caféine (indisponible)</span>
+              </label>
+            </div>
+          </div>
+          <div>
+            <div class="component-label">Radios</div>
+            <div style="display:flex;flex-direction:column;gap:0.625rem">
+              <label class="radio-label">
+                <input type="radio" name="size" class="radio-input" checked>
+                <span class="radio-circle"></span>
+                Petit — 160ml
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="size" class="radio-input">
+                <span class="radio-circle"></span>
+                Moyen — 240ml
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="size" class="radio-input">
+                <span class="radio-circle"></span>
+                Grand — 360ml
+              </label>
+            </div>
+          </div>
+          <div>
+            <div class="component-label">Toggles</div>
+            <div style="display:flex;flex-direction:column;gap:0.75rem">
+              <label class="toggle-label">
+                <input type="checkbox" class="toggle-input" checked>
+                <span class="toggle-track"></span>
+                Notifications
+              </label>
+              <label class="toggle-label">
+                <input type="checkbox" class="toggle-input">
+                <span class="toggle-track"></span>
+                Mode sombre
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════
+         03 — CARTES
+    ═════════════════════════════════════════════ -->
+    <section id="cards" class="section">
+      <div class="section-header">
+        <span class="section-number">03</span>
+        <div>
+          <h2 class="section-title">Cartes</h2>
+          <p class="section-desc">Trois typologies : Produit (menu), Événement, et Story (storytelling de marque).</p>
+        </div>
+      </div>
+
+      <!-- Product Cards -->
+      <div class="subsection">
+        <h3 class="subsection-title">Cartes Produit</h3>
+        <div class="component-demo" style="background:var(--color-latte)">
+          <div class="component-row">
+            <!-- Card 1 -->
+            <div class="card card-product">
+              <div class="card-product-img">
+                ☕
+                <div class="card-product-badge">Nouveau</div>
+              </div>
+              <div class="card-product-body">
+                <div class="card-product-category">Espresso</div>
+                <div class="card-product-name">Caramel Macchiato</div>
+                <div class="card-product-desc">Expresso, lait vapeur et sirop caramel artisanal</div>
+                <div class="card-product-footer">
+                  <div class="card-product-price"><span class="currency">€</span>4,50</div>
+                  <button class="btn btn-primary btn-sm">Ajouter</button>
+                </div>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="card card-product">
+              <div class="card-product-img" style="background:linear-gradient(135deg,#2D1810,#4A2515)">
+                🍵
+              </div>
+              <div class="card-product-body">
+                <div class="card-product-category">Spécialités</div>
+                <div class="card-product-name">Ethiopian Cold Brew</div>
+                <div class="card-product-desc">Infusion à froid 18h, notes de fruits rouges</div>
+                <div class="card-product-footer">
+                  <div class="card-product-price"><span class="currency">€</span>5,80</div>
+                  <button class="btn btn-primary btn-sm">Ajouter</button>
+                </div>
+              </div>
+            </div>
+            <!-- Card 3 — sold out -->
+            <div class="card card-product" style="opacity:.7">
+              <div class="card-product-img" style="background:var(--color-parchment)">
+                🧇
+                <div class="card-product-badge" style="background:#9A6B50">Épuisé</div>
+              </div>
+              <div class="card-product-body">
+                <div class="card-product-category">Pâtisserie</div>
+                <div class="card-product-name">Croissant Amande</div>
+                <div class="card-product-desc">Croissant feuilleté, crème d'amande, amandes effilées</div>
+                <div class="card-product-footer">
+                  <div class="card-product-price" style="text-decoration:line-through;color:var(--color-text-subtle)"><span class="currency">€</span>3,20</div>
+                  <button class="btn btn-ghost btn-sm" disabled>Épuisé</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table class="spec-table">
+          <thead><tr><th>Propriété</th><th>Token</th><th>Valeur</th></tr></thead>
+          <tbody>
+            <tr><td>Border radius</td><td><span class="token">--radius-xl</span></td><td>16px</td></tr>
+            <tr><td>Shadow repos</td><td><span class="token">--shadow-card</span></td><td>double couche chaleureuse</td></tr>
+            <tr><td>Shadow hover</td><td>—</td><td>translateY(-2px) + shadow renforcée</td></tr>
+            <tr><td>Image height</td><td>—</td><td>160px (fixe), object-fit: cover</td></tr>
+            <tr><td>Transition</td><td><span class="token">--transition-base</span></td><td>300ms ease-in-out</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Event Cards -->
+      <div class="subsection">
+        <h3 class="subsection-title">Cartes Événement</h3>
+        <div class="component-demo" style="background:var(--color-parchment)">
+          <div class="component-row">
+            <div class="card card-event">
+              <div class="card-event-img">
+                <div class="card-event-date">
+                  <div class="card-event-date-day">24</div>
+                  <div class="card-event-date-month">Mai</div>
+                </div>
+              </div>
+              <div class="card-event-body">
+                <div class="card-event-type">Atelier</div>
+                <div class="card-event-name">Initiation à la torréfaction</div>
+                <div class="card-event-meta">
+                  <span>🕑 14h – 16h</span>
+                  <span>👥 12 places</span>
+                </div>
+              </div>
+            </div>
+            <div class="card card-event">
+              <div class="card-event-img" style="background:linear-gradient(135deg,var(--color-espresso),#6B3A25)">
+                <div class="card-event-date" style="background:var(--color-honey)">
+                  <div class="card-event-date-day">07</div>
+                  <div class="card-event-date-month">Jun</div>
+                </div>
+              </div>
+              <div class="card-event-body">
+                <div class="card-event-type">Soirée</div>
+                <div class="card-event-name">Jazz & Espresso Night</div>
+                <div class="card-event-meta">
+                  <span>🕖 19h – 23h</span>
+                  <span>🎟 Gratuit</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story Cards -->
+      <div class="subsection">
+        <h3 class="subsection-title">Cartes Story (Storytelling)</h3>
+        <div class="component-demo" style="background:var(--color-latte)">
+          <div class="component-row">
+            <div class="card card-story">
+              <div class="card-story-number">01</div>
+              <div class="card-story-title">Origine & Terroir</div>
+              <div class="card-story-body">Nous sélectionnons nos grains directement auprès de producteurs en Éthiopie, Colombie et Guatemala, garantissant une traçabilité totale.</div>
+            </div>
+            <div class="card card-story">
+              <div class="card-story-number">02</div>
+              <div class="card-story-title">Torréfaction Artisanale</div>
+              <div class="card-story-body">Chaque lot est torréfié à la commande dans notre atelier, à des profils de température précis pour révéler les arômes uniques de chaque origine.</div>
+            </div>
+            <div class="card card-story">
+              <div class="card-story-number">03</div>
+              <div class="card-story-title">Service Avec Passion</div>
+              <div class="card-story-body">Nos baristas certifiés préparent chaque tasse avec soin et amour du détail, transformant chaque visite en une expérience mémorable.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="subsection">
+        <h3 class="subsection-title">Cartes Statistiques</h3>
+        <div class="component-demo">
+          <div class="component-row">
+            <div class="stat-card stat-accent">
+              <div class="stat-label">Cafés servis</div>
+              <div class="stat-value">150K+</div>
+              <div class="stat-sub">Depuis l'ouverture</div>
+            </div>
+            <div class="stat-card" style="border-top:3px solid var(--color-honey)">
+              <div class="stat-label">Avis positifs</div>
+              <div class="stat-value" style="color:var(--color-honey)">4.9⭐</div>
+              <div class="stat-sub">+1K avis clients</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Origines café</div>
+              <div class="stat-value">12</div>
+              <div class="stat-sub">Pays producteurs</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Baristas formés</div>
+              <div class="stat-value">3K+</div>
+              <div class="stat-sub">Programme certifié</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════
+         04 — NAVIGATION
+    ═════════════════════════════════════════════ -->
+    <section id="navigation" class="section">
+      <div class="section-header">
+        <span class="section-number">04</span>
+        <div>
+          <h2 class="section-title">Navigation</h2>
+          <p class="section-desc">Navbar desktop (72px de hauteur), état scrolled avec backdrop blur, et breadcrumb.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Navbar Desktop — État normal</h3>
+        <div class="navbar-demo">
+          <a href="#" class="navbar-brand">
+            <div class="navbar-logo">☕</div>
+            <span class="navbar-name">Bean There</span>
+          </a>
+          <nav class="navbar-links">
+            <a href="#" class="navbar-link active">Accueil</a>
+            <a href="#" class="navbar-link">Menu</a>
+            <a href="#" class="navbar-link">Événements</a>
+            <a href="#" class="navbar-link">Notre Histoire</a>
+            <a href="#" class="navbar-link">Contact</a>
+          </nav>
+          <div class="navbar-actions">
+            <button class="btn btn-ghost btn-sm">Connexion</button>
+            <button class="btn btn-primary btn-sm">Commander</button>
+            <div class="navbar-cart">
+              🛒
+              <span class="cart-badge">3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Navbar — État scrolled (backdrop blur)</h3>
+        <div class="navbar-demo navbar-scrolled" style="border-radius:var(--radius-lg)">
+          <a href="#" class="navbar-brand">
+            <div class="navbar-logo">☕</div>
+            <span class="navbar-name">Bean There</span>
+          </a>
+          <nav class="navbar-links">
+            <a href="#" class="navbar-link">Accueil</a>
+            <a href="#" class="navbar-link active">Menu</a>
+            <a href="#" class="navbar-link">Événements</a>
+            <a href="#" class="navbar-link">Notre Histoire</a>
+          </nav>
+          <div class="navbar-actions">
+            <button class="btn btn-secondary btn-sm">Connexion</button>
+            <button class="btn btn-primary btn-sm">Commander</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Breadcrumb</h3>
+        <div class="component-demo">
+          <nav class="breadcrumb">
+            <a href="#" class="breadcrumb-item">Accueil</a>
+            <span class="breadcrumb-sep">›</span>
+            <a href="#" class="breadcrumb-item">Menu</a>
+            <span class="breadcrumb-sep">›</span>
+            <a href="#" class="breadcrumb-item">Boissons chaudes</a>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-item active">Caramel Macchiato</span>
+          </nav>
+        </div>
+      </div>
+
+      <table class="spec-table">
+        <thead><tr><th>Propriété</th><th>Token</th><th>Valeur</th></tr></thead>
+        <tbody>
+          <tr><td>Hauteur navbar</td><td><span class="token">--header-height</span></td><td>72px</td></tr>
+          <tr><td>Hauteur scrolled</td><td><span class="token">--header-height-compact</span></td><td>60px</td></tr>
+          <tr><td>Fond</td><td><span class="token">--color-espresso</span></td><td>#1C0F07</td></tr>
+          <tr><td>Fond scrolled</td><td>—</td><td>rgba(28,15,7,.95) + backdrop-blur(12px)</td></tr>
+          <tr><td>Z-index</td><td><span class="token">--z-sticky</span></td><td>200</td></tr>
+          <tr><td>Transition scroll</td><td><span class="token">--transition-base</span></td><td>300ms ease</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ════════════════════════════════════════════
+         05 — BADGES & TAGS
+    ═════════════════════════════════════════════ -->
+    <section id="badges" class="section">
+      <div class="section-header">
+        <span class="section-number">05</span>
+        <div>
+          <h2 class="section-title">Badges & Tags</h2>
+          <p class="section-desc">Badges pour les statuts de produits, tags interactifs pour les filtres.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Badges</h3>
+        <div class="component-demo">
+          <div class="component-label">Variants de badges</div>
+          <div class="component-row" style="flex-wrap:wrap">
+            <span class="badge badge-primary">Populaire</span>
+            <span class="badge badge-dark">Premium</span>
+            <span class="badge badge-gold">★ Coup de cœur</span>
+            <span class="badge badge-new">Nouveau</span>
+            <span class="badge badge-success">Disponible</span>
+            <span class="badge badge-error">Rupture</span>
+            <span class="badge badge-sold-out">Épuisé</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Tags de filtre</h3>
+        <div class="component-demo">
+          <div class="component-row" style="flex-wrap:wrap">
+            <span class="tag active">Tous</span>
+            <span class="tag">Espresso</span>
+            <span class="tag">Latte</span>
+            <span class="tag">Cold Brew</span>
+            <span class="tag">Pâtisseries</span>
+            <span class="tag">Végétalien</span>
+            <span class="tag">Sans gluten</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════
+         06 — ALERTES & TOASTS
+    ═════════════════════════════════════════════ -->
+    <section id="alerts" class="section">
+      <div class="section-header">
+        <span class="section-number">06</span>
+        <div>
+          <h2 class="section-title">Alertes & Notifications</h2>
+          <p class="section-desc">Alertes inline et toasts pour le feedback utilisateur.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Alertes inline</h3>
+        <div class="component-demo" style="display:flex;flex-direction:column;gap:1rem;max-width:600px">
+          <div class="alert alert-success">
+            <span class="alert-icon">✓</span>
+            <div class="alert-content">
+              <div class="alert-title">Commande confirmée !</div>
+              <div class="alert-desc">Votre commande #2847 a été reçue. Temps d'attente estimé : 5 min.</div>
+            </div>
+          </div>
+          <div class="alert alert-warning">
+            <span class="alert-icon">⚠</span>
+            <div class="alert-content">
+              <div class="alert-title">Stock limité</div>
+              <div class="alert-desc">Il ne reste que 3 croissants amande. Commandez vite !</div>
+            </div>
+          </div>
+          <div class="alert alert-error">
+            <span class="alert-icon">✕</span>
+            <div class="alert-content">
+              <div class="alert-title">Paiement refusé</div>
+              <div class="alert-desc">Votre carte a été refusée. Veuillez vérifier vos informations ou utiliser un autre moyen de paiement.</div>
+            </div>
+          </div>
+          <div class="alert alert-info">
+            <span class="alert-icon">ℹ</span>
+            <div class="alert-content">
+              <div class="alert-title">Fermeture exceptionnelle</div>
+              <div class="alert-desc">Le café sera fermé le 1er janvier pour le Jour de l'An. À bientôt en 2026 !</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Toast Notifications</h3>
+        <div class="component-demo" style="display:flex;flex-direction:column;gap:0.75rem;align-items:flex-start">
+          <div class="toast">
+            <span class="toast-icon">☕</span>
+            <div class="toast-content">
+              <div class="toast-title">Café ajouté au panier</div>
+              <div class="toast-desc">Caramel Macchiato × 1 — 4,50€</div>
+            </div>
+            <span class="toast-close">×</span>
+          </div>
+          <div class="toast" style="border-color:rgba(61,122,78,.3)">
+            <span class="toast-icon" style="color:#6BC98A">✓</span>
+            <div class="toast-content">
+              <div class="toast-title" style="color:#6BC98A">Réservation confirmée</div>
+              <div class="toast-desc">Table pour 2 — Samedi 24 mai à 19h</div>
+            </div>
+            <span class="toast-close">×</span>
+          </div>
+        </div>
+        <table class="spec-table" style="margin-top:1rem">
+          <thead><tr><th>Propriété</th><th>Token</th><th>Valeur</th></tr></thead>
+          <tbody>
+            <tr><td>Fond</td><td><span class="token">--color-espresso</span></td><td>#1C0F07</td></tr>
+            <tr><td>Shadow</td><td><span class="token">--shadow-xl</span></td><td>extra large pour flotter</td></tr>
+            <tr><td>Z-index</td><td><span class="token">--z-toast</span></td><td>500</td></tr>
+            <tr><td>Border radius</td><td><span class="token">--radius-xl</span></td><td>16px</td></tr>
+            <tr><td>Animation entrée</td><td>—</td><td>slideInRight 300ms spring</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════
+         07 — MODAUX
+    ═════════════════════════════════════════════ -->
+    <section id="modals" class="section">
+      <div class="section-header">
+        <span class="section-number">07</span>
+        <div>
+          <h2 class="section-title">Modaux & Dialogs</h2>
+          <p class="section-desc">Structure standard d'un modal avec header, body et footer.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Modal — Détail produit</h3>
+        <div class="modal-demo">
+          <div class="modal">
+            <div class="modal-header">
+              <h3 class="modal-title">Caramel Macchiato</h3>
+              <button class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+              <div style="background:linear-gradient(135deg,var(--color-parchment),var(--color-latte));height:200px;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:4rem;margin-bottom:1.25rem">☕</div>
+              <div style="display:flex;gap:0.5rem;margin-bottom:1rem">
+                <span class="badge badge-primary">Populaire</span>
+                <span class="badge badge-new">Nouveau</span>
+              </div>
+              <p style="font-size:0.9375rem;color:var(--color-text-muted);line-height:1.65;margin-bottom:1rem">
+                Un expresso corsé rencontrant la douceur d'un caramel artisanal maison, sublimé par un lait vapeur soyeux et une touche de mousse légère.
+              </p>
+              <div class="form-group" style="margin-bottom:0.75rem">
+                <label class="form-label">Taille</label>
+                <select class="select"><option>Petit (160ml) — 3,80€</option><option selected>Moyen (240ml) — 4,50€</option><option>Grand (360ml) — 5,20€</option></select>
+              </div>
+              <div class="form-group" style="margin-bottom:0">
+                <label class="form-label">Lait</label>
+                <select class="select"><option>Entier</option><option>Écrémé</option><option>Avoine (+0,50€)</option><option>Amande (+0,50€)</option></select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-ghost btn-md">Annuler</button>
+              <button class="btn btn-primary btn-md">Ajouter au panier — 4,50€</button>
+            </div>
+          </div>
+        </div>
+        <table class="spec-table">
+          <thead><tr><th>Propriété</th><th>Token</th><th>Valeur</th></tr></thead>
+          <tbody>
+            <tr><td>Border radius</td><td><span class="token">--radius-2xl</span></td><td>24px</td></tr>
+            <tr><td>Shadow</td><td><span class="token">--shadow-xl</span></td><td>profonde, dramatique</td></tr>
+            <tr><td>Z-index modal</td><td><span class="token">--z-modal</span></td><td>400</td></tr>
+            <tr><td>Z-index overlay</td><td><span class="token">--z-overlay</span></td><td>300</td></tr>
+            <tr><td>Overlay</td><td>—</td><td>rgba(28,15,7,.6) + backdrop-blur(4px)</td></tr>
+            <tr><td>Animation</td><td>—</td><td>scaleIn(0.95→1) + fadeIn, 300ms spring</td></tr>
+            <tr><td>Max-width</td><td>—</td><td>480px (standard), 600px (large)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════
+         08 — DIVERS
+    ═════════════════════════════════════════════ -->
+    <section id="misc" class="section">
+      <div class="section-header">
+        <span class="section-number">08</span>
+        <div>
+          <h2 class="section-title">Divers</h2>
+          <p class="section-desc">Dividers, états de chargement (skeleton & spinner), et composants utilitaires.</p>
+        </div>
+      </div>
+
+      <!-- Dividers -->
+      <div class="subsection">
+        <h3 class="subsection-title">Dividers</h3>
+        <div class="component-demo" style="display:flex;flex-direction:column;gap:1.5rem;max-width:500px">
+          <div>
+            <div class="component-label">Standard</div>
+            <hr class="divider">
+          </div>
+          <div>
+            <div class="component-label">Strong</div>
+            <hr class="divider divider-strong">
+          </div>
+          <div>
+            <div class="component-label">Accent (gradient caramel)</div>
+            <div class="divider-accent"></div>
+          </div>
+          <div>
+            <div class="component-label">Avec label</div>
+            <div class="divider-with-label">Ou continuer avec</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading States -->
+      <div class="subsection">
+        <h3 class="subsection-title">États de chargement</h3>
+        <div class="component-demo">
+          <div class="component-label">Skeleton Loader — Carte produit</div>
+          <div style="width:220px;border-radius:var(--radius-xl);overflow:hidden;border:1px solid var(--color-border-muted)">
+            <div class="skeleton" style="height:160px;border-radius:0"></div>
+            <div style="padding:1.125rem">
+              <div class="skeleton" style="height:10px;width:60%;margin-bottom:8px"></div>
+              <div class="skeleton" style="height:16px;width:85%;margin-bottom:6px"></div>
+              <div class="skeleton" style="height:12px;width:75%;margin-bottom:12px"></div>
+              <div class="skeleton" style="height:12px;width:55%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="component-demo" style="margin-top:1rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap">
+          <div>
+            <div class="component-label">Spinner Small</div>
+            <div class="spinner" style="width:20px;height:20px;border-width:2px"></div>
+          </div>
+          <div>
+            <div class="component-label">Spinner Medium</div>
+            <div class="spinner"></div>
+          </div>
+          <div>
+            <div class="component-label">Spinner Large</div>
+            <div class="spinner" style="width:40px;height:40px;border-width:3px"></div>
+          </div>
+          <div>
+            <div class="component-label">Button Loading</div>
+            <button class="btn btn-primary btn-md btn-loading">Chargement...</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Focus Ring Spec -->
+      <div class="subsection">
+        <h3 class="subsection-title">Anneau de focus (accessibilité)</h3>
+        <div class="component-demo">
+          <p style="font-size:0.875rem;color:var(--color-text-muted);margin-bottom:1rem">
+            Tous les éléments interactifs utilisent un focus ring visible de <strong>2px solid <span class="token">--color-caramel</span></strong> avec un offset de 3px.
+          </p>
+          <div class="component-row">
+            <button class="btn btn-primary btn-md" style="outline:2px solid var(--color-caramel);outline-offset:3px">Focus primary</button>
+            <input class="input" style="max-width:200px;border-color:var(--color-caramel);box-shadow:0 0 0 3px rgba(201,135,74,.18)" placeholder="Focus input">
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const links    = document.querySelectorAll('.sidebar-link[href^="#"]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.sidebar-link[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

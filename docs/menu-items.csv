@@ -1,0 +1,21 @@
+categorie,nom,description,prix,badge
+Boissons Espresso,Espresso,"Double extraction lente sur grains éthiopiens torréfiés artisanalement, corps intense et fin fruitée persistante.",2.20,
+Boissons Espresso,Cappuccino,"Espresso onctueux coiffé d'une mousse de lait veloutée, saupoudré de cacao de São Tomé.",3.80,Populaire
+Boissons Espresso,Latte Macchiato Caramel,"Espresso versé sur lait chaud, nappage de caramel artisanal maison et chantilly légère.",4.50,Favori de la maison
+Boissons Espresso,Flat White,"Double ristretto sur micro-mousse de lait soyeuse, signature des baristas australiens.",4.20,
+Boissons Espresso,Cortado,"Espresso équilibré d'une égale part de lait vapeur chaud, douceur sans dominer le café.",3.20,
+Boissons Espresso,Americano,"Espresso allongé à l'eau chaude filtrée, longueur en bouche remarquable, idéal au petit-déjeuner.",2.80,
+Boissons Froides,Cold Brew Éthiopien,"Grains Yirgacheffe infusés à froid pendant 18 heures, notes de fruits rouges et fleurs de jasmin.",5.20,Nouveau
+Boissons Froides,Iced Latte Vanille,"Espresso refroidi sur lait entier et glaçons, parfumé à la gousse de vanille Bourbon de Madagascar.",4.80,Populaire
+Boissons Froides,Frappé Caramel,"Café mixé avec lait entier, sirop caramel, servi avec chantilly maison et éclats de praline croustillants.",5.50,Favori de la maison
+Boissons Froides,Limonade Menthe-Citron,"Citrons de Sicile pressés minute, sirop de menthe fraîche maison, eau gazeuse artisanale.",4.00,
+Boissons Froides,Smoothie Mangue-Passion,"Mangue Alphonso, fruit de la passion, banane, lait de coco et yaourt grec, sans sucre ajouté.",5.80,Végétalien
+Pâtisseries,Croissant au Beurre,"Feuilletage pur beurre d'Isigny AOP, croustillant caramélisé dehors, alvéoles fondantes dedans, cuit du matin.",2.50,
+Pâtisseries,Pain au Chocolat,"Pâte feuilletée beurre, deux barres de chocolat noir Grand Cru 72%, doré à l'œuf.",2.80,Populaire
+Pâtisseries,Tarte Citron Meringuée,"Citrons de Menton, crème onctueuse, meringue italienne dorée au chalumeau, pâte sablée craquante.",4.50,Favori de la maison
+Pâtisseries,Financier Amande-Noisette,"Beurre noisette doré, poudre d'amandes brutes, miel de fleurs sauvages, texture moelleuse intense.",3.20,
+Pâtisseries,Cheesecake Caramel Beurre Salé,"Base spéculoos croquante, crème Philadelphia onctueuse, coulée de caramel au beurre salé de Bretagne.",5.50,Nouveau
+Sandwiches,Club Sandwich Classique,"Poulet fermier rôti tranché, bacon grillé croustillant, tomate, laitue croquante, mayonnaise citron maison.",8.50,Populaire
+Sandwiches,Sandwich Saumon-Avocat,"Saumon fumé Label Rouge, avocat Hass, fromage frais herbes-citron, pain Nordic aux graines.",9.80,Favori de la maison
+Sandwiches,Panini Poulet-Pesto,"Poulet grillé mariné aux herbes, pesto basilic frais maison, tomates séchées, mozzarella di bufala fondante.",8.20,
+Sandwiches,Tartine Végétarienne,"Pain de campagne au levain, houmous maison, légumes grillés du marché, feta, tomates cerise, basilic frais.",7.50,Végétalien

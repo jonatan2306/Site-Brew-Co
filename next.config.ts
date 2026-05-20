@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Toutes les images sont désormais servies localement depuis public/images/
 };
 
 export default nextConfig;

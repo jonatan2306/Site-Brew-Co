@@ -52,9 +52,9 @@ export default function Footer() {
             </address>
             <div className="mt-5">
               <p className="eyebrow text-[var(--color-honey)] mb-2">Horaires</p>
-              <p className="text-[var(--color-almond)] text-sm">Lun–Ven · 7h30–18h30</p>
-              <p className="text-[var(--color-almond)] text-sm">Sam · 8h00–19h00</p>
-              <p className="text-[var(--color-almond)] text-sm">Dim · 9h00–17h00</p>
+              <p className="text-[var(--color-almond)] text-sm">Lun–Ven · 6h00–20h00</p>
+              <p className="text-[var(--color-almond)] text-sm">Sam · 9h00–18h00</p>
+              <p className="text-[var(--color-almond)] text-sm">Dim · 10h00–16h00</p>
             </div>
           </div>
         </div>

@@ -17,9 +17,9 @@ const TIME_SLOTS = Array.from({ length: 28 }, (_, i) => {
 });
 
 const hours = [
-  { label: 'Lun–Ven', value: '7h30–18h30' },
-  { label: 'Samedi', value: '8h00–19h00' },
-  { label: 'Dimanche', value: '9h00–17h00' },
+  { label: 'Lun–Ven', value: '6h00–20h00' },
+  { label: 'Samedi', value: '9h00–18h00' },
+  { label: 'Dimanche', value: '10h00–16h00' },
 ];
 
 export default function ReservationSection() {

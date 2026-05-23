@@ -51,10 +51,29 @@ const BREW_THEME = `
     --chat--footer--color:             #9A6B50;
   }
 
-  /* Bordures arrondies de la fenêtre */
+  /* Fenêtre — bordure café + coins arrondis */
   .chat-window {
     border-radius: 24px !important;
-    overflow: hidden;
+    border: 2px solid #4A2515 !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 32px rgba(28, 15, 7, 0.20) !important;
+  }
+
+  /* Header — logo ☕ avant le titre */
+  .chat-heading::before {
+    content: '☕';
+    margin-right: 8px;
+    font-style: normal;
+  }
+
+  /* Zone de saisie — alignement vertical input + bouton */
+  .chat-inputs-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+  .chat-input {
+    align-self: center !important;
   }
 
   /* Bouton d'envoi — centrage + icône blanche */
@@ -62,14 +81,14 @@ const BREW_THEME = `
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    align-self: center !important;
     color: #ffffff !important;
+    flex-shrink: 0 !important;
   }
   .chat-input-send-button svg {
     display: block !important;
-    margin: auto !important;
     fill: #ffffff !important;
     color: #ffffff !important;
-    transform: translateY(-2px) !important;
   }
   .chat-input-send-button svg path,
   .chat-input-send-button svg polygon,

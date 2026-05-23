@@ -63,3 +63,53 @@ body {
   text-transform: uppercase;
   color: var(--color-caramel);
 }
+
+/* ── n8n Chat Widget — Brew & Co theme ───────────────────────── */
+:root {
+  /* Couleurs principales */
+  --chat--color-primary:           #C9874A;  /* caramel */
+  --chat--color-primary-shade-50:  #b87540;
+  --chat--color-primary-shade-100: #a36838;
+  --chat--color-secondary:         #E8A836;  /* honey */
+  --chat--color-secondary-shade-50:#d09730;
+
+  /* Surfaces */
+  --chat--color-white:             #FEFAF5;  /* snow */
+  --chat--color-light:             #F7EDD5;  /* cream */
+  --chat--color-light-shade-50:    #EDE0C4;  /* parchment */
+  --chat--color-light-shade-100:   #D4B896;  /* border */
+  --chat--color-medium:            #9A6B50;  /* text-subtle */
+  --chat--color-dark:              #1C0F07;  /* espresso */
+  --chat--color-disabled:          #D4B896;
+  --chat--color-typing:            #C9874A;
+
+  /* Header */
+  --chat--header--background:      #2D1810;  /* coffee */
+  --chat--header--color:           #FEFAF5;
+
+  /* Messages */
+  --chat--message--bot--background:  #F7EDD5;
+  --chat--message--bot--color:       #1C0F07;
+  --chat--message--user--background: #C9874A;
+  --chat--message--user--color:      #FEFAF5;
+
+  /* Bouton toggle */
+  --chat--toggle--background:        #C9874A;
+  --chat--toggle--hover--background: #b87540;
+  --chat--toggle--active--background:#a36838;
+  --chat--toggle--color:             #FEFAF5;
+  --chat--toggle--size:              56px;
+
+  /* Fenêtre */
+  --chat--border-radius:    16px;
+  --chat--window--width:    380px;
+  --chat--window--height:   600px;
+
+  /* Typographie */
+  --chat--font-family:      'DM Sans', system-ui, -apple-system, sans-serif;
+
+  /* Input */
+  --chat--input--background:          #FEFAF5;
+  --chat--input--border-color-focus:  #C9874A;
+  --chat--input--send--button--color: #C9874A;
+}

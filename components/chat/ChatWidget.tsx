@@ -69,6 +69,7 @@ const BREW_THEME = `
     margin: auto !important;
     fill: #ffffff !important;
     color: #ffffff !important;
+    transform: translateY(-2px) !important;
   }
   .chat-input-send-button svg path,
   .chat-input-send-button svg polygon,

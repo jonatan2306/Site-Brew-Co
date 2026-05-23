@@ -66,50 +66,63 @@ body {
 
 /* ── n8n Chat Widget — Brew & Co theme ───────────────────────── */
 :root {
-  /* Couleurs principales */
-  --chat--color-primary:           #C9874A;  /* caramel */
-  --chat--color-primary-shade-50:  #b87540;
-  --chat--color-primary-shade-100: #a36838;
-  --chat--color-secondary:         #E8A836;  /* honey */
-  --chat--color-secondary-shade-50:#d09730;
+  /* — Couleurs primaire/secondaire (noms exacts du widget) — */
+  --chat--color--primary:            #C9874A;   /* caramel — toggle, accents   */
+  --chat--color--primary-shade-50:   #b87540;   /* caramel foncé — hover       */
+  --chat--color--primary--shade-100: #a36838;   /* caramel plus foncé — active */
+  --chat--color--secondary:          #4A2515;   /* roast — messages utilisateur */
+  --chat--color-secondary-shade-50:  #3d1e10;
 
-  /* Surfaces */
-  --chat--color-white:             #FEFAF5;  /* snow */
-  --chat--color-light:             #F7EDD5;  /* cream */
-  --chat--color-light-shade-50:    #EDE0C4;  /* parchment */
-  --chat--color-light-shade-100:   #D4B896;  /* border */
-  --chat--color-medium:            #9A6B50;  /* text-subtle */
-  --chat--color-dark:              #1C0F07;  /* espresso */
-  --chat--color-disabled:          #D4B896;
-  --chat--color-typing:            #C9874A;
+  /* — Surfaces neutres — */
+  --chat--color-white:               #FEFAF5;   /* snow                        */
+  --chat--color-light:               #F5EDD8;   /* latte                       */
+  --chat--color-light-shade-50:      #EDE0C4;   /* parchment                   */
+  --chat--color-light-shade-100:     #D4B896;   /* border                      */
+  --chat--color-medium:              #9A6B50;   /* text-subtle                 */
+  --chat--color-dark:                #2D1810;   /* coffee                      */
+  --chat--color-disabled:            #D4B896;
+  --chat--color-typing:              #C9874A;   /* caramel (indicateur saisie) */
 
-  /* Header */
-  --chat--header--background:      #2D1810;  /* coffee */
-  --chat--header--color:           #FEFAF5;
+  /* — Bouton toggle (la bulle en bas à droite) — */
+  --chat--toggle--background:         #C9874A;
+  --chat--toggle--hover--background:  #b87540;
+  --chat--toggle--active--background: #a36838;
+  --chat--toggle--color:              #FEFAF5;
 
-  /* Messages */
-  --chat--message--bot--background:  #F7EDD5;
-  --chat--message--bot--color:       #1C0F07;
-  --chat--message--user--background: #C9874A;
-  --chat--message--user--color:      #FEFAF5;
+  /* — Header de la fenêtre de chat — */
+  --chat--header--background:  #2D1810;   /* coffee             */
+  --chat--header--color:       #F7EDD5;   /* cream              */
 
-  /* Bouton toggle */
-  --chat--toggle--background:        #C9874A;
-  --chat--toggle--hover--background: #b87540;
-  --chat--toggle--active--background:#a36838;
-  --chat--toggle--color:             #FEFAF5;
-  --chat--toggle--size:              56px;
+  /* — Corps de la fenêtre — */
+  --chat--body--background:    #FEFAF5;   /* snow               */
 
-  /* Fenêtre */
-  --chat--border-radius:    16px;
-  --chat--window--width:    380px;
-  --chat--window--height:   600px;
+  /* — Bulles de messages — */
+  --chat--message--bot--background:   #F7EDD5;  /* cream          */
+  --chat--message--bot--color:        #1C0F07;  /* espresso       */
+  --chat--message--user--background:  #4A2515;  /* roast          */
+  --chat--message--user--color:       #F7EDD5;  /* cream          */
 
-  /* Typographie */
-  --chat--font-family:      'DM Sans', system-ui, -apple-system, sans-serif;
+  /* — Zone de saisie — */
+  --chat--input--background:                   #FEFAF5;
+  --chat--input--text-color:                   #1C0F07;
+  --chat--input--border:                       1px solid #D4B896;
+  --chat--input--border-active:                1px solid #C9874A;
+  --chat--input--container--background:        #F5EDD8;
+  --chat--input--container--border:            1px solid #D4B896;
+  --chat--input--send--button--background:     #C9874A;
+  --chat--input--send--button--background-hover: #b87540;
+  --chat--input--send--button--color:          #FEFAF5;
+  --chat--input--send--button--color-hover:    #FEFAF5;
 
-  /* Input */
-  --chat--input--background:          #FEFAF5;
-  --chat--input--border-color-focus:  #C9874A;
-  --chat--input--send--button--color: #C9874A;
+  /* — Footer — */
+  --chat--footer--background:  #F5EDD8;   /* latte              */
+  --chat--footer--color:       #9A6B50;   /* text-subtle        */
+
+  /* — Fenêtre & rayon — */
+  --chat--border-radius:         12px;
+  --chat--window--border-radius: 16px;
+  --chat--window--border:        1px solid #D4B896;
+
+  /* — Typographie — */
+  --chat--font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
 }

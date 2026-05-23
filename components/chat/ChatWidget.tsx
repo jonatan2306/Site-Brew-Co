@@ -120,8 +120,7 @@ export default function ChatWidget() {
       document.head.appendChild(style)
 
       createChat({
-        webhookUrl:
-          'https://n8n.nexoria-dev.online/webhook/4ff810b1-4c1d-4038-807f-68107bbd6036/chat',
+        webhookUrl: '/api/chat',
         mode: 'window',
         showWelcomeScreen: false,
         loadPreviousSession: false,

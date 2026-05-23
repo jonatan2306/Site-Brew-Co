@@ -64,18 +64,25 @@ const BREW_THEME = `
     font-family: var(--font-playfair), Georgia, 'Times New Roman', serif !important;
     color: #E8A836 !important;
     font-weight: 700 !important;
-    font-size: 1.25rem !important;
+    font-size: 1rem !important;
     letter-spacing: -0.01em !important;
   }
 
   /* Zone de saisie — alignement vertical input + bouton */
+  .chat-inputs,
   .chat-inputs-controls {
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important;
+  }
+  .chat-input-left-panel {
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    flex: 1 !important;
   }
   .chat-input {
     align-self: center !important;
+    margin: 0 !important;
   }
 
   /* Bouton d'envoi — centrage + icône blanche */

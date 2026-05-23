@@ -14,6 +14,7 @@ export default function ChatWidget() {
           'https://n8n.nexoria-dev.online/webhook/4ff810b1-4c1d-4038-807f-68107bbd6036/chat',
         mode: 'window',
         showWelcomeScreen: false,
+        loadPreviousSession: false,
         defaultLanguage: 'en',
         initialMessages: [
           'Bonjour et bienvenue chez Brew & Co ! ☕',

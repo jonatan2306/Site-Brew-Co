@@ -57,11 +57,16 @@ const BREW_THEME = `
     overflow: hidden;
   }
 
-  /* Icône du bouton d'envoi — blanc forcé */
+  /* Bouton d'envoi — centrage + icône blanche */
   .chat-input-send-button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     color: #ffffff !important;
   }
   .chat-input-send-button svg {
+    display: block !important;
+    margin: auto !important;
     fill: #ffffff !important;
     color: #ffffff !important;
   }

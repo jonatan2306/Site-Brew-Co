@@ -59,11 +59,13 @@ const BREW_THEME = `
     box-shadow: 0 8px 32px rgba(28, 15, 7, 0.20) !important;
   }
 
-  /* Header — logo ☕ avant le titre */
-  .chat-heading::before {
-    content: '☕';
-    margin-right: 8px;
-    font-style: normal;
+  /* Header — titre stylisé comme le logo navbar (Playfair Display, honey) */
+  .chat-heading {
+    font-family: var(--font-playfair), Georgia, 'Times New Roman', serif !important;
+    color: #E8A836 !important;
+    font-weight: 700 !important;
+    font-size: 1.25rem !important;
+    letter-spacing: -0.01em !important;
   }
 
   /* Zone de saisie — alignement vertical input + bouton */

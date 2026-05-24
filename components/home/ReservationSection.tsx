@@ -25,6 +25,8 @@ const hours = [
 export default function ReservationSection() {
   const [form, setForm] = useState<FormData>({ name: '', partySize: '', date: '', time: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Partial<FormData>>({});
 
   const today = useMemo(() => new Date().toISOString().split('T')[0], []);
@@ -39,9 +41,40 @@ export default function ReservationSection() {
     return Object.keys(e).length === 0;
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (validate()) setSubmitted(true);
+    if (!validate()) return;
+
+    setLoading(true);
+    setApiError(null);
+
+    try {
+      const res = await fetch('/api/reservation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:      form.name.trim(),
+          partySize: Number(form.partySize),
+          date:      form.date,
+          time:      form.time,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setApiError(
+          (data as { error?: string }).error ??
+          'Une erreur est survenue. Veuillez réessayer.'
+        );
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setApiError('Impossible de joindre le serveur. Vérifiez votre connexion.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   const inputClass = "w-full h-11 px-4 rounded-xl border border-[var(--color-border)] focus:border-[var(--color-caramel)] focus:outline-none focus:ring-2 focus:ring-[var(--color-caramel)]/20 transition-all duration-200 text-[var(--color-text)] bg-[var(--color-snow)]";
@@ -142,6 +175,11 @@ export default function ReservationSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 shadow-[var(--shadow-card)] space-y-5" noValidate>
+                {apiError && (
+                  <div className="bg-[var(--color-error)]/10 border border-[var(--color-error)]/30 rounded-xl px-4 py-3 text-[var(--color-error)] text-sm" role="alert">
+                    {apiError}
+                  </div>
+                )}
                 <div>
                   <label htmlFor="res-name" className={labelClass}>Nom complet</label>
                   <input
@@ -204,9 +242,10 @@ export default function ReservationSection() {
 
                 <button
                   type="submit"
-                  className="w-full h-13 text-base font-semibold rounded-full bg-[var(--color-caramel)] text-white hover:bg-[var(--color-honey)] hover:text-[var(--color-espresso)] hover:shadow-[var(--shadow-glow-caramel)] active:scale-[0.98] transition-all duration-300 cursor-pointer mt-2"
+                  disabled={loading}
+                  className="w-full h-13 text-base font-semibold rounded-full bg-[var(--color-caramel)] text-white hover:bg-[var(--color-honey)] hover:text-[var(--color-espresso)] hover:shadow-[var(--shadow-glow-caramel)] active:scale-[0.98] transition-all duration-300 cursor-pointer mt-2 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Confirmer la réservation
+                  {loading ? 'Envoi en cours…' : 'Confirmer la réservation'}
                 </button>
               </form>
             )}

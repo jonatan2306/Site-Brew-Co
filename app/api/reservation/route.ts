@@ -15,7 +15,9 @@ import { NextRequest, NextResponse } from 'next/server'
  */
 
 // ── Webhook n8n (jamais visible côté client) ──────────────────────────────────
-const WEBHOOK_URL = process.env.N8N_RESERVATION_WEBHOOK
+const WEBHOOK_URL        = process.env.N8N_RESERVATION_WEBHOOK
+const AUTH_HEADER_NAME   = process.env.N8N_AUTH_HEADER_NAME
+const AUTH_HEADER_VALUE  = process.env.N8N_AUTH_HEADER_VALUE
 
 // ── Rate-limit en mémoire ─────────────────────────────────────────────────────
 // (suffisant pour une app monoprocéssus ; remplacer par Redis/Upstash en multi)
@@ -159,11 +161,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: result.error }, { status: 422 })
   }
 
-  // 5. Transmission au webhook n8n (URL invisible côté client)
+  // 5. Transmission au webhook n8n (URL + credentials invisibles côté client)
   try {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+    if (AUTH_HEADER_NAME && AUTH_HEADER_VALUE) {
+      headers[AUTH_HEADER_NAME] = AUTH_HEADER_VALUE
+    }
+
     const n8nRes = await fetch(WEBHOOK_URL, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body:    JSON.stringify(result.data),
     })
 
